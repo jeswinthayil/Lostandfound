@@ -1,5 +1,7 @@
 package lostandfound.config.models;
 
+import io.vertx.core.json.JsonObject;
+
 public class User {
     public static JsonObject toMongoDoc(JsonObject body, String hashedPassword, String token, long expiryTime) {
         return new JsonObject()
