@@ -23,7 +23,7 @@ public class Main extends AbstractVerticle {
 
     @Override
     public void start() {
-        Vertx vertx = Vertx.vertx();
+
         MongoClient mongoClient = DatabaseConfig.getMongoClient(vertx);
         Router router = Router.router(vertx);
 
