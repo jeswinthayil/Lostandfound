@@ -4,17 +4,45 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a413556e-e083-4003-8d69-aeaa5a9581fa" name="Changes" comment="" />
+    <list default="true" id="a413556e-e083-4003-8d69-aeaa5a9581fa" name="Changes" comment="created item object">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/lostandfound/config/handlers/AdminHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lostandfound/config/handlers/AdminHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/lostandfound/config/handlers/ItemHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lostandfound/config/handlers/ItemHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/lostandfound/config/models/Category.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lostandfound/config/models/Category.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/lostandfound/config/models/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lostandfound/config/models/User.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 5
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="master" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "saahilpal"
+  }
 }]]></component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/jeswinthayil/Lostandfound.git",
+    "accountId": "656d1c95-d84c-4a24-b0e4-3e56d4ee4065"
+  }
+}]]></component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 5
+}</component>
   <component name="ProjectId" id="2zaP2pkPgs29pGIR06LyFQCYGMO" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -23,6 +51,8 @@
   "keyToString": {
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "dev-2",
     "kotlin-language-version-configured": "true"
   }
 }]]></component>
@@ -35,6 +65,45 @@
       <option name="presentableId" value="Default" />
       <updated>1751966008389</updated>
     </task>
+    <task id="LOCAL-00001" summary="created item object">
+      <option name="closed" value="true" />
+      <created>1751969360196</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1751969360196</updated>
+    </task>
+    <task id="LOCAL-00002" summary="created item object">
+      <option name="closed" value="true" />
+      <created>1751969420660</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1751969420660</updated>
+    </task>
+    <task id="LOCAL-00003" summary="added method for markClaimed">
+      <option name="closed" value="true" />
+      <created>1751970556535</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1751970556535</updated>
+    </task>
+    <task id="LOCAL-00004" summary="created user object">
+      <option name="closed" value="true" />
+      <created>1751971628618</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1751971628618</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="created item object" />
+    <MESSAGE value="added method for markClaimed" />
+    <MESSAGE value="created user object" />
+    <option name="LAST_COMMIT_MESSAGE" value="created user object" />
   </component>
 </project>
