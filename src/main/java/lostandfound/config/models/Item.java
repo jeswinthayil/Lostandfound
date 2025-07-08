@@ -1,5 +1,7 @@
 package lostandfound.config.models;
 
+import io.vertx.core.json.JsonObject;
+
 public class Item {
     public static JsonObject toMongoDoc(JsonObject body, String userEmail, String imageUrl) {
         return new JsonObject()
