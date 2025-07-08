@@ -11,7 +11,6 @@ import io.vertx.ext.web.RoutingContext;
 import lostandfound.config.middleware.AuthMiddleware;
 import lostandfound.config.models.Item;
 import lostandfound.config.utils.MailUtil;
-
 import java.util.Set;
 import java.util.UUID;
 
@@ -25,11 +24,11 @@ public class ItemHandler {
     }
 
     public void setupRoutes(Router router) {
-        router.post("/api/items").handler(AuthMiddleware.requireAuth(vertx)).handler(this::handlePostItem);
+        router.post("/api/items").handler(AuthMiddleware.requireAuth()).handler(this::handlePostItem);
         router.get("/api/items").handler(this::handleGetItems);
         router.get("/api/items/:id").handler(this::handleGetItemById);
-        router.patch("/api/items/:id/claim").handler(AuthMiddleware.requireAuth(vertx)).handler(this::handleMarkClaimed);
-        router.post("/api/items/:id/contact").handler(AuthMiddleware.requireAuth(vertx)).handler(this::handleContactPoster);
+        router.patch("/api/items/:id/claim").handler(AuthMiddleware.requireAuth()).handler(this::handleMarkClaimed);
+        router.post("/api/items/:id/contact").handler(AuthMiddleware.requireAuth()).handler(this::handleContactPoster);
     }
 
     private void handlePostItem(RoutingContext ctx) {

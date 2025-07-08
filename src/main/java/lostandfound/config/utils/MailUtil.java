@@ -39,4 +39,23 @@ public class MailUtil {
             }
         });
     }
+
+    public static void sendContactMessage(Vertx vertx, String to, String from, String itemTitle, String userMessage) {
+        MailMessage message = new MailMessage()
+                .setFrom("Lost & Found <your_email@gmail.com>")
+                .setTo(to)
+                .setSubject("Someone responded to your Lost & Found post")
+                .setText("Message from: " + from + "\n\n" +
+                        "Regarding: " + itemTitle + "\n\n" +
+                        "Message:\n" + userMessage);
+
+        mailClient.sendMail(message, result -> {
+            if (result.succeeded()) {
+                System.out.println("Contact email sent successfully.");
+            } else {
+                System.err.println("Failed to send contact email: " + result.cause());
+            }
+        });
+    }
+
 }

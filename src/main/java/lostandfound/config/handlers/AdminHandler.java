@@ -18,9 +18,10 @@ public class AdminHandler {
     }
 
     public void setupRoutes(Router router) {
-        router.get("/api/admin/items").handler(AuthMiddleware.requireAdmin(vertx)).handler(this::handleViewAllItems);
-        router.delete("/api/admin/items/:id").handler(AuthMiddleware.requireAdmin(vertx)).handler(this::handleDeleteItem);
-        router.get("/api/admin/stats").handler(AuthMiddleware.requireAdmin(vertx)).handler(this::handleStats);
+        router.get("/api/admin/items").handler(AuthMiddleware.requireAdmin()).handler(this::handleViewAllItems);
+        router.delete("/api/admin/items/:id").handler(AuthMiddleware.requireAdmin()).handler(this::handleDeleteItem);
+        router.get("/api/admin/stats").handler(AuthMiddleware.requireAdmin()).handler(this::handleStats);
+
     }
 
     private void handleViewAllItems(RoutingContext ctx) {
