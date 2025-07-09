@@ -60,9 +60,9 @@ public class Main extends AbstractVerticle {
                 .requestHandler(router)
                 .listen(8888, res -> {
                     if (res.succeeded()) {
-                        System.out.println("✅ Server is running at http://localhost:8888");
+                        System.out.println("Server is running at http://localhost:8888");
                     } else {
-                        System.err.println("❌ Server failed to start: " + res.cause());
+                        System.err.println("Server failed to start: " + res.cause());
                     }
                 });
     }
