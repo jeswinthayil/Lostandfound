@@ -56,4 +56,11 @@ public class JwtUtil {
                 .getBody();
         return claims.get("role", String.class);
     }
+    public static long getExpirationTime(String token) {
+        Claims claims = Jwts.parser().setSigningKey(SECRET_KEY)
+                .parseClaimsJws(token)
+                .getBody();
+        return claims.getExpiration().getTime();
+    }
+
 }
