@@ -28,7 +28,9 @@ public class MailUtil {
                 .setFrom("Lost & Found <your_email@gmail.com>")
                 .setTo(to)
                 .setSubject("Verify your email")
-                .setText("Click the link to verify your email:\n" + verifyLink);
+                .setText("Click the link below to verify your email:\n\n"
+                        + verifyLink +
+                        "\n\nNote: This link is valid for only 10 minutes. ");
 
         mailClient.sendMail(message, result -> {
             if (result.succeeded()) {
