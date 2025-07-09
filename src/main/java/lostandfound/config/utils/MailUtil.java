@@ -59,7 +59,7 @@ public class MailUtil {
         });
     }
     public static void sendForgotPasswordEmail( String to, String token) {
-        String resetLink = "http://localhost:8888/api/auth/reset-password/" + token;
+        String resetLink = "http://localhost:8888/api/auth/reset-password?token=" + token;
 
         MailMessage message = new MailMessage()
                 .setFrom("Lost & Found <findly.kjc@gmail.com>")
