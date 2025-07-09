@@ -9,7 +9,8 @@ import java.util.Date;
 public class JwtUtil {
 
     private static final String SECRET_KEY = "your_super_secret_key_here";
-    private static final long EXPIRATION_TIME = 1000 * 60 * 60 * 24; // 24 hours
+    private static final long EXPIRATION_TIME = 1000 * 60 * 60 ; // 1 hour
+
 
     public static String createToken(String email, String role) {
         return Jwts.builder()

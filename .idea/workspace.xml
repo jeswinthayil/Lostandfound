@@ -5,11 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a413556e-e083-4003-8d69-aeaa5a9581fa" name="Changes" comment="created item object">
+      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/lostandfound/config/handlers/AdminHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lostandfound/config/handlers/AdminHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/lostandfound/config/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lostandfound/config/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/lostandfound/config/handlers/ItemHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lostandfound/config/handlers/ItemHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/lostandfound/config/models/Category.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lostandfound/config/models/Category.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/lostandfound/config/models/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lostandfound/config/models/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/lostandfound/config/utils/JwtUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lostandfound/config/utils/JwtUtil.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -24,16 +25,16 @@
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "saahilpal"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;saahilpal&quot;
   }
-}]]></component>
+}</component>
   <component name="GithubPullRequestsUISettings"><![CDATA[{
   "selectedUrlAndAccountId": {
     "url": "https://github.com/jeswinthayil/Lostandfound.git",
-    "accountId": "656d1c95-d84c-4a24-b0e4-3e56d4ee4065"
+    "accountId": "7a3564bf-6746-4e16-ac61-e0dcbe74015d"
   }
 }]]></component>
   <component name="ProblemsViewState">
@@ -49,10 +50,11 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "Application.Main.executor": "Run",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "dev-2",
+    "git-widget-placeholder": "master",
     "kotlin-language-version-configured": "true"
   }
 }]]></component>

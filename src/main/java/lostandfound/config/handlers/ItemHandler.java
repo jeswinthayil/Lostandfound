@@ -11,6 +11,8 @@ import io.vertx.ext.web.RoutingContext;
 import lostandfound.config.middleware.AuthMiddleware;
 import lostandfound.config.models.Item;
 import lostandfound.config.utils.MailUtil;
+
+import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
@@ -32,7 +34,8 @@ public class ItemHandler {
     }
 
     private void handlePostItem(RoutingContext ctx) {
-        Set<FileUpload> uploads = ctx.fileUploads();
+        Set<FileUpload> uploads = new HashSet<>(ctx.fileUploads());
+
 
         if (uploads.isEmpty()) {
             ctx.response().setStatusCode(400).end("Image file required");
