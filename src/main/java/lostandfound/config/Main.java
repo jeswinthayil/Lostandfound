@@ -10,6 +10,11 @@ import io.vertx.ext.web.Router;
 import io.vertx.ext.web.handler.BodyHandler;
 import io.vertx.ext.web.handler.CorsHandler;
 import io.vertx.ext.web.handler.StaticHandler;
+import lostandfound.config.utils.RedisUtil;
+
+import io.vertx.redis.client.Redis;
+import io.vertx.redis.client.RedisAPI;
+import io.vertx.redis.client.RedisOptions;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -26,6 +31,11 @@ public class Main extends AbstractVerticle {
 
         MongoClient mongoClient = DatabaseConfig.getMongoClient(vertx);
         Router router = Router.router(vertx);
+
+        // ✅ INIT REDIS
+        RedisUtil.init(vertx);
+
+        RedisAPI redis = RedisUtil.getRedis(); // anywhere
 
         // Enable CORS (so Angular frontend can access APIs)
         Set<String> allowedHeaders = new HashSet<>();
