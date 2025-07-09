@@ -39,7 +39,7 @@ public class AuthHandler {
             return;
         }
 
-        if (!email.endsWith("@kristujyanti.com")) {
+        if (!email.endsWith("@kristujayanti.com")) {
             ctx.response().setStatusCode(403).end("Only college emails allowed");
             return;
         }
