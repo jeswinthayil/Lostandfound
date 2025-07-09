@@ -1,5 +1,7 @@
 package lostandfound.config.handlers;
 
+import lostandfound.config.middleware.AuthMiddleware;
+import io.vertx.redis.client.RedisAPI;
 import io.vertx.core.Vertx;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.mongo.MongoClient;
@@ -8,6 +10,9 @@ import io.vertx.ext.web.RoutingContext;
 import lostandfound.config.utils.JwtUtil;
 import lostandfound.config.utils.MailUtil;
 import lostandfound.config.utils.PasswordUtil;
+import java.util.List;
+import lostandfound.config.utils.RedisUtil;
+
 
 import java.util.UUID;
 
@@ -26,8 +31,10 @@ public class AuthHandler {
         router.get("/api/auth/verify/:token").handler(this::handleVerifyEmail);
         router.post("/api/auth/login").handler(this::handleLogin);
         router.post("/api/auth/forgot-password").handler(this::handleForgotPassword);
-        router.post("/api/auth/reset-password").handler(this::handleResetPassword);
-        router.get("/api/auth/reset-password").handler(this::handleResetPasswordPage);
+        router.post("/api/auth/logout")
+                .handler(AuthMiddleware.requireAuth(RedisUtil.getRedis()))
+                .handler(this::handleLogout);
+
 
     }
 
@@ -112,66 +119,6 @@ public class AuthHandler {
             }
         });
     }
-    private void handleResetPasswordPage(RoutingContext ctx) {
-        String token = ctx.queryParam("token").isEmpty() ? null : ctx.queryParam("token").get(0);
-
-        if (token == null) {
-            ctx.response().setStatusCode(400).end("Missing token");
-            return;
-        }
-
-        ctx.response()
-                .putHeader("Content-Type", "application/json")
-                .end(new JsonObject()
-                        .put("token", token)
-                        .put("message", "Use this token with POST /api/auth/reset-password along with newPassword")
-                        .encode());
-    }
-
-    private void handleResetPassword(RoutingContext ctx) {
-        JsonObject body = ctx.body().asJsonObject();
-        String token = body.getString("token");
-        String newPassword = body.getString("newPassword");
-
-        if (token == null || newPassword == null) {
-            ctx.response().setStatusCode(400).end("Missing token or new password");
-            return;
-        }
-
-        // Check if reset token exists
-        mongoClient.findOne("password_resets", new JsonObject().put("token", token), null, lookup -> {
-            if (lookup.succeeded() && lookup.result() != null) {
-                JsonObject resetData = lookup.result();
-                String email = resetData.getString("email");
-
-                // Optional expiry check (e.g. 10 mins):
-                long createdAt = resetData.getLong("createdAt", 0L);
-                if (System.currentTimeMillis() - createdAt > 10 * 60 * 1000) {
-                    ctx.response().setStatusCode(410).end("Reset token expired");
-                    return;
-                }
-
-                // Hash new password
-                String hashed = PasswordUtil.hashPassword(newPassword);
-
-                JsonObject update = new JsonObject()
-                        .put("$set", new JsonObject().put("password", hashed));
-
-                mongoClient.updateCollection("users", new JsonObject().put("email", email), update, updateRes -> {
-                    if (updateRes.succeeded()) {
-                        // Optionally remove reset token
-                        mongoClient.removeDocument("password_resets", new JsonObject().put("token", token), remove -> {
-                            ctx.response().setStatusCode(200).end("Password updated successfully");
-                        });
-                    } else {
-                        ctx.response().setStatusCode(500).end("Failed to update password");
-                    }
-                });
-            } else {
-                ctx.response().setStatusCode(400).end("Invalid or expired reset token");
-            }
-        });
-    }
 
 
     // Email verification
@@ -236,5 +183,25 @@ public class AuthHandler {
                 ctx.response().setStatusCode(401).end("Invalid email or password");
             }
         });
+    }
+
+    //Logout
+    private void handleLogout(RoutingContext ctx) {
+        String authHeader = ctx.request().getHeader("Authorization");
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            ctx.response().setStatusCode(401).end("Missing token");
+            return;
+        }
+
+        String token = authHeader.substring(7); // remove "Bearer "
+        long expiry = JwtUtil.getExpirationTime(token); // you need to implement this method
+
+        long ttlSeconds = (expiry - System.currentTimeMillis()) / 1000;
+
+        RedisAPI redis = RedisUtil.getRedis();
+
+        redis.setex("blacklist:" + token, String.valueOf(ttlSeconds), "1")
+                .onSuccess(res -> ctx.response().end("Logged out successfully"))
+                .onFailure(err -> ctx.response().setStatusCode(500).end("Redis error: " + err.getMessage()));
     }
 }

@@ -2,6 +2,12 @@ package lostandfound.config.middleware;
 import io.vertx.ext.web.RoutingContext;
 import lostandfound.config.utils.JwtUtil;
 import io.vertx.core.Handler;
+import io.vertx.redis.client.RedisAPI;
+import java.util.List;
+import io.vertx.core.AsyncResult;
+
+
+
 public class AuthMiddleware {
     public static void handle(RoutingContext ctx) {
         String authHeader = ctx.request().getHeader("Authorization");
@@ -86,4 +92,35 @@ public class AuthMiddleware {
             ctx.next(); // continue to next handler
         };
     }
+
+    public static Handler<RoutingContext> requireAuth(RedisAPI redis) {
+        return ctx -> {
+            String authHeader = ctx.request().getHeader("Authorization");
+
+            if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+                ctx.response().setStatusCode(401).end("Missing or invalid token");
+                return;
+            }
+
+            String token = authHeader.substring(7);
+
+            if (!JwtUtil.validateToken(token)) {
+                ctx.response().setStatusCode(401).end("Invalid or expired token");
+                return;
+            }
+
+            redis.get("blacklist:" + token, res -> {
+                if (res.succeeded() && res.result() != null) {
+                    ctx.response().setStatusCode(401).end("Token is blacklisted. Please login again.");
+                } else {
+                    String email = JwtUtil.getEmailFromToken(token);
+                    String role = JwtUtil.getRoleFromToken(token);
+                    ctx.put("userEmail", email);
+                    ctx.put("role", role);
+                    ctx.next();
+                }
+            });
+        };
+    }
+
 }
