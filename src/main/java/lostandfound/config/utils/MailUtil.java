@@ -57,5 +57,16 @@ public class MailUtil {
             }
         });
     }
+    public static void sendForgotPasswordEmail(Vertx vertx, String to, String token) {
+        String resetLink = "http://localhost:8888/api/auth/reset-password/" + token;
+
+        MailMessage message = new MailMessage()
+                .setFrom("Lost & Found <findly.kjc@gmail.com>")
+                .setTo(to)
+                .setSubject("Reset your password")
+                .setText("You requested a password reset. Click the link below to reset your password:\n\n"
+                        + resetLink +
+                        "\n\nNote: This link is valid for only 10 minutes. "
+                        + "If it expires, please request a new one.");
 
 }
