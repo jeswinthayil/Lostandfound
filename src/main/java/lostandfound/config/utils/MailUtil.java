@@ -1,6 +1,5 @@
 package lostandfound.config.utils;
 import io.vertx.core.Vertx;
-import io.vertx.core.json.JsonObject;
 import io.vertx.ext.mail.MailClient;
 import io.vertx.ext.mail.MailConfig;
 import io.vertx.ext.mail.MailMessage;
@@ -22,7 +21,7 @@ public class MailUtil {
         mailClient = MailClient.createShared(Vertx.vertx(), config, "mailPool");
     }
 
-    public static void sendVerificationEmail(Vertx vertx, String to, String token) {
+    public static void sendVerificationEmail( String to, String token) {
         String verifyLink = "http://localhost:8888/api/auth/verify/" + token;
 
         MailMessage message = new MailMessage()
@@ -40,7 +39,7 @@ public class MailUtil {
         });
     }
 
-    public static void sendContactMessage(Vertx vertx, String to, String from, String itemTitle, String userMessage) {
+    public static void sendContactMessage( String to, String from, String itemTitle, String userMessage) {
         MailMessage message = new MailMessage()
                 .setFrom("Lost & Found <your_email@gmail.com>")
                 .setTo(to)
@@ -57,7 +56,7 @@ public class MailUtil {
             }
         });
     }
-    public static void sendForgotPasswordEmail(Vertx vertx, String to, String token) {
+    public static void sendForgotPasswordEmail( String to, String token) {
         String resetLink = "http://localhost:8888/api/auth/reset-password/" + token;
 
         MailMessage message = new MailMessage()

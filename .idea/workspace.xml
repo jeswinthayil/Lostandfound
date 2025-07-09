@@ -5,6 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a413556e-e083-4003-8d69-aeaa5a9581fa" name="Changes" comment="commit">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/lostandfound/config/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lostandfound/config/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/lostandfound/config/handlers/AuthHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lostandfound/config/handlers/AuthHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/lostandfound/config/handlers/ItemHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lostandfound/config/handlers/ItemHandler.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/lostandfound/config/utils/MailUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lostandfound/config/utils/MailUtil.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -155,7 +160,31 @@
       <option name="project" value="LOCAL" />
       <updated>1752036303754</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="commit">
+      <option name="closed" value="true" />
+      <created>1752037084110</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1752037084110</updated>
+    </task>
+    <task id="LOCAL-00013" summary="forgot password handler">
+      <option name="closed" value="true" />
+      <created>1752037114038</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1752037114038</updated>
+    </task>
+    <task id="LOCAL-00014" summary="commit">
+      <option name="closed" value="true" />
+      <created>1752037122206</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1752037122206</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -166,6 +195,7 @@
     <MESSAGE value="changed the expiration time" />
     <MESSAGE value="added forget password feature" />
     <MESSAGE value="added admin condition" />
+    <MESSAGE value="forgot password handler" />
     <MESSAGE value="commit" />
     <option name="LAST_COMMIT_MESSAGE" value="commit" />
   </component>
