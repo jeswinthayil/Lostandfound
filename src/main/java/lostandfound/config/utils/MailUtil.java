@@ -69,4 +69,14 @@ public class MailUtil {
                         "\n\nNote: This link is valid for only 10 minutes. "
                         + "If it expires, please request a new one.");
 
+        mailClient.sendMail(message, result -> {
+            if (result.succeeded()) {
+                System.out.println("Password reset email sent to: " + to);
+            } else {
+                System.err.println("Failed to send password reset email: " + result.cause().getMessage());
+            }
+        });
+    }
 }
+
+
