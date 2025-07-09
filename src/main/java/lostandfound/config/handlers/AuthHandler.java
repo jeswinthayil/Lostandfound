@@ -25,6 +25,7 @@ public class AuthHandler {
         router.post("/api/auth/register").handler(this::handleRegister);
         router.get("/api/auth/verify/:token").handler(this::handleVerifyEmail);
         router.post("/api/auth/login").handler(this::handleLogin);
+        router.post("/api/auth/forgot-password").handler(this::handleForgotPassword);
     }
 
     // Register new user
@@ -39,7 +40,7 @@ public class AuthHandler {
             return;
         }
 
-        if (!email.endsWith("@kristujayanti.com")) {
+        if (!email.endsWith("@kristujayanti.com") && !email.equals("findly.kjc@gmail.com")) {
             ctx.response().setStatusCode(403).end("Only college emails allowed");
             return;
         }
@@ -63,7 +64,7 @@ public class AuthHandler {
 
                 mongoClient.insert("users", user, insert -> {
                     if (insert.succeeded()) {
-                        MailUtil.sendVerificationEmail(vertx, email, token);
+                        MailUtil.sendVerificationEmail( email, token);
                         ctx.response().setStatusCode(201).end("Registered. Check your email.");
                     } else {
                         ctx.response().setStatusCode(500).end("Failed to register");
@@ -72,6 +73,43 @@ public class AuthHandler {
             }
         });
     }
+    public void handleForgotPassword(RoutingContext ctx) {
+        JsonObject body = ctx.body().asJsonObject();
+        String email = body.getString("email");
+
+        if (email == null || !email.endsWith("@kristujayanti.com")) {
+            ctx.response().setStatusCode(400).end("Invalid or missing college email");
+            return;
+        }
+
+        // 1. Check if user exists
+        mongoClient.findOne("users", new JsonObject().put("email", email), null, lookup -> {
+            if (lookup.succeeded() && lookup.result() != null) {
+                // 2. Generate a reset token
+                String token = UUID.randomUUID().toString();  // Or JWT if preferred
+
+                // 3. Store token with expiry (in Redis or Mongo with TTL)
+                JsonObject tokenData = new JsonObject()
+                        .put("email", email)
+                        .put("token", token)
+                        .put("createdAt", System.currentTimeMillis());
+
+                // TTL logic using MongoDB (if you don’t use Redis)
+                mongoClient.save("password_resets", tokenData, res -> {
+                    if (res.succeeded()) {
+                        // 4. Send email
+                        MailUtil.sendForgotPasswordEmail( email, token);
+                        ctx.response().setStatusCode(200).end("Reset email sent");
+                    } else {
+                        ctx.response().setStatusCode(500).end("Failed to save reset token");
+                    }
+                });
+            } else {
+                ctx.response().setStatusCode(404).end("Email not found");
+            }
+        });
+    }
+
 
     // Email verification
     private void handleVerifyEmail(RoutingContext ctx) {

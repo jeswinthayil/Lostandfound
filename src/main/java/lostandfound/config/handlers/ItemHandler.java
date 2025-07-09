@@ -170,7 +170,7 @@ public class ItemHandler {
 
                 String itemTitle = item.getString("title");
 
-                MailUtil.sendContactMessage(vertx, posterEmail, senderEmail, itemTitle, message);
+                MailUtil.sendContactMessage( posterEmail, senderEmail, itemTitle, message);
 
                 ctx.response().end("Message sent to item poster");
             } else {

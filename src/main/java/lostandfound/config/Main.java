@@ -36,7 +36,13 @@ public class Main extends AbstractVerticle {
         allowedHeaders.add("accept");
         allowedHeaders.add("Authorization");
 
-        router.route().handler(CorsHandler.create("*").allowedHeaders(allowedHeaders));
+        CorsHandler corsHandler = CorsHandler.create()
+                .addOrigin("*")  // Allow all origins
+                .allowedHeaders(allowedHeaders)
+                .allowCredentials(true);  // Optional: only if you want to allow cookies/auth headers
+
+        router.route().handler(corsHandler);
+
 
         // Enable multipart form data (for file uploads)
         router.route().handler(BodyHandler.create()
@@ -60,9 +66,9 @@ public class Main extends AbstractVerticle {
                 .requestHandler(router)
                 .listen(8888, res -> {
                     if (res.succeeded()) {
-                        System.out.println("✅ Server is running at http://localhost:8888");
+                        System.out.println("Server is running at http://localhost:8888");
                     } else {
-                        System.err.println("❌ Server failed to start: " + res.cause());
+                        System.err.println("Server failed to start: " + res.cause());
                     }
                 });
     }

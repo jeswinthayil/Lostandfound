@@ -40,8 +40,9 @@
         <dependency>
             <groupId>io.vertx</groupId>
             <artifactId>vertx-web</artifactId>
-            <version>4.5.1</version>
+            <version>4.5.1</version> <!-- ✅ Match with vertx-core -->
         </dependency>
+
 
         <!-- Vert.x MongoDB Client -->
         <dependency>
