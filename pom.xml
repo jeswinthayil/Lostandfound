@@ -43,6 +43,11 @@
             <version>4.5.1</version> <!-- ✅ Match with vertx-core -->
         </dependency>
 
+        <dependency>
+            <groupId>io.github.cdimascio</groupId>
+            <artifactId>java-dotenv</artifactId>
+            <version>5.2.0</version>
+        </dependency>
 
         <!-- Vert.x MongoDB Client -->
         <dependency>
