@@ -115,6 +115,13 @@
             <scope>runtime</scope>
         </dependency>
 
+        <!-- In your pom.xml -->
+        <dependency>
+            <groupId>io.vertx</groupId>
+            <artifactId>vertx-redis-client</artifactId>
+            <version>4.5.1</version>
+        </dependency>
+
 
 
         <!-- Vert.x Config (Optional: for loading external config files) -->
