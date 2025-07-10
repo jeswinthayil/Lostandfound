@@ -24,6 +24,10 @@ public class AdminHandler {
         // 🆕 Add routes for category management
         router.post("/api/admin/categories").handler(AuthMiddleware.requireAdmin()).handler(this::handleAddCategory);
         router.get("/api/categories").handler(this::handleGetCategories);  // Public
+        router.delete("/api/admin/categories/:id")
+                .handler(AuthMiddleware.requireAdmin())
+                .handler(this::handleDeleteCategory);
+
 
     }
 
@@ -113,5 +117,30 @@ public class AdminHandler {
             }
         });
     }
+
+    private void handleDeleteCategory(RoutingContext ctx) {
+        String categoryId = ctx.pathParam("id");
+
+        if (categoryId == null || categoryId.isEmpty()) {
+            ctx.response().setStatusCode(400).end("Category ID is required");
+            return;
+        }
+
+        JsonObject query = new JsonObject().put("_id", categoryId); // Don't wrap in $oid manually
+
+        mongoClient.removeDocument("categories", query, res -> {
+            if (res.succeeded()) {
+                if (res.result().getRemovedCount() == 0) {
+                    ctx.response().setStatusCode(404).end("Category not found");
+                } else {
+                    ctx.response().setStatusCode(200).end("Category deleted");
+                }
+            } else {
+                ctx.response().setStatusCode(500).end("Failed to delete category");
+            }
+        });
+    }
+
+
 
 }
