@@ -53,7 +53,7 @@ public class Main extends AbstractVerticle {
                     }
                 });
             } else {
-                System.out.println("ℹ️ Admin already exists");
+                System.out.println(" ");
             }
         });
 
