@@ -10,7 +10,6 @@ import io.vertx.ext.web.RoutingContext;
 import lostandfound.config.utils.JwtUtil;
 import lostandfound.config.utils.MailUtil;
 import lostandfound.config.utils.PasswordUtil;
-import java.util.List;
 import lostandfound.config.utils.RedisUtil;
 
 
@@ -35,9 +34,46 @@ public class AuthHandler {
                 .handler(AuthMiddleware.requireAuth(RedisUtil.getRedis()))
                 .handler(this::handleLogout);
         router.get("/api/me").handler(this::handleGetMyProfile);
+        router.patch("/api/me").handler(this::handleUpdateProfile);
 
 
     }
+    private void handleUpdateProfile(RoutingContext ctx)
+    {
+        String authHeader = ctx.request().getHeader("Authorization");
+
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            ctx.response().setStatusCode(401).end("Missing or invalid token");
+            return;
+        }
+
+        String token = authHeader.substring(7);
+        if (!JwtUtil.validateToken(token)) {
+            ctx.response().setStatusCode(401).end("Invalid or expired token");
+            return;
+        }
+
+        String email = JwtUtil.getEmailFromToken(token);
+        JsonObject body = ctx.body().asJsonObject();
+        String newName = body.getString("name");
+
+        if (newName == null || newName.trim().isEmpty()) {
+            ctx.response().setStatusCode(400).end("Name cannot be empty");
+            return;
+        }
+
+        JsonObject update = new JsonObject().put("$set", new JsonObject().put("name", newName));
+        mongoClient.updateCollection("users", new JsonObject().put("email", email), update, res -> {
+            if (res.succeeded()) {
+                ctx.response().end("Name updated successfully");
+            } else {
+                ctx.response().setStatusCode(500).end("Failed to update name");
+            }
+        });
+
+    }
+
+
     private  void handleGetMyProfile(RoutingContext ctx)
     {
         String authHeader = ctx.request().getHeader("Authorization");
