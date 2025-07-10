@@ -57,6 +57,18 @@ public class ItemHandler {
                 String userEmail = ctx.data().get("userEmail").toString();
                 String imageUrl = "/uploads/" + newFileName;
 
+                // ✅ Validate required fields
+                String name = body.getString("name");
+                String description = body.getString("description");
+                String category = body.getString("category");
+
+                if (name == null || name.trim().isEmpty() ||
+                        description == null || description.trim().isEmpty() ||
+                        category == null || category.trim().isEmpty()) {
+                    ctx.response().setStatusCode(400).end("Name, description, and category are required");
+                    return;
+                }
+
                 JsonObject itemDoc = Item.toMongoDoc(body, userEmail, imageUrl);
 
                 mongoClient.insert("items", itemDoc, insertRes -> {
