@@ -34,6 +34,40 @@ public class AuthHandler {
         router.post("/api/auth/logout")
                 .handler(AuthMiddleware.requireAuth(RedisUtil.getRedis()))
                 .handler(this::handleLogout);
+        router.get("/api/me").handler(this::handleGetMyProfile);
+
+
+    }
+    private  void handleGetMyProfile(RoutingContext ctx)
+    {
+        String authHeader = ctx.request().getHeader("Authorization");
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            ctx.response().setStatusCode(401).end("Missing or invalid Authorization header");
+            return;
+        }
+        String token = authHeader.substring(7); // remove "Bearer " prefix
+        String email;
+        try {
+            email = JwtUtil.getEmailFromToken(token);
+        } catch (Exception e) {
+            ctx.response().setStatusCode(401).end("Invalid or expired token");
+            return;
+        }
+
+        mongoClient.findOne("users", new JsonObject().put("email", email), null, res -> {
+            if (res.succeeded() && res.result() != null) {
+                JsonObject user = res.result();
+                JsonObject profile = new JsonObject()
+                        .put("name", user.getString("name"))
+                        .put("email", user.getString("email"));
+
+                ctx.response()
+                        .putHeader("Content-Type", "application/json")
+                        .end(profile.encode());
+            } else {
+                ctx.response().setStatusCode(404).end("User not found");
+            }
+        });
 
 
     }
