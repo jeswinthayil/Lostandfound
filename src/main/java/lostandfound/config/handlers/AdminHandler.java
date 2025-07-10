@@ -21,6 +21,9 @@ public class AdminHandler {
         router.get("/api/admin/items").handler(AuthMiddleware.requireAdmin()).handler(this::handleViewAllItems);
         router.delete("/api/admin/items/:id").handler(AuthMiddleware.requireAdmin()).handler(this::handleDeleteItem);
         router.get("/api/admin/stats").handler(AuthMiddleware.requireAdmin()).handler(this::handleStats);
+        // 🆕 Add routes for category management
+        router.post("/api/admin/categories").handler(AuthMiddleware.requireAdmin()).handler(this::handleAddCategory);
+        router.get("/api/categories").handler(this::handleGetCategories);  // Public
 
     }
 
@@ -73,4 +76,42 @@ public class AdminHandler {
             }
         });
     }
+    // Admin adds a category
+    private void handleAddCategory(RoutingContext ctx) {
+        JsonObject body = ctx.body().asJsonObject();
+        String name = body.getString("name");
+        String description = body.getString("description", "");
+
+        if (name == null || name.trim().isEmpty()) {
+            ctx.response().setStatusCode(400).end("Category name is required");
+            return;
+        }
+
+        JsonObject category = new JsonObject()
+                .put("name", name)
+                .put("description", description)
+                .put("createdAt", System.currentTimeMillis());
+
+        mongoClient.insert("categories", category, res -> {
+            if (res.succeeded()) {
+                ctx.response().setStatusCode(201).end("Category added");
+            } else {
+                ctx.response().setStatusCode(500).end("Failed to add category");
+            }
+        });
+    }
+
+    // Anyone can fetch categories
+    public void handleGetCategories(RoutingContext ctx) {
+        mongoClient.find("categories", new JsonObject(), res -> {
+            if (res.succeeded()) {
+                ctx.response()
+                        .putHeader("Content-Type", "application/json")
+                        .end(new JsonArray(res.result()).encode());
+            } else {
+                ctx.response().setStatusCode(500).end("Failed to fetch categories");
+            }
+        });
+    }
+
 }
