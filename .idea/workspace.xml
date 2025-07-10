@@ -4,14 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
- <list default="true" id="a413556e-e083-4003-8d69-aeaa5a9581fa" name="Changes" comment="commit - created item object">
-   <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-   <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-   <change beforePath="$PROJECT_DIR$/src/main/java/lostandfound/config/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lostandfound/config/Main.java" afterDir="false" />
- </list>
-java" afterDir="false" />
-
-      <change beforePath="$PROJECT_DIR$/src/main/java/lostandfound/config/utils/MailUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lostandfound/config/utils/MailUtil.java" afterDir="false" />
+    <list default="true" id="338ec3af-c662-40c1-91f1-eda3c9302397" name="Changes" comment="added my profile api">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/lostandfound/config/handlers/AuthHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lostandfound/config/handlers/AuthHandler.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -19,214 +14,58 @@ java" afterDir="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_BRANCH_BY_REPOSITORY">
-      <map>
-        <entry key="$PROJECT_DIR$" value="master" />
-      </map>
-    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory">{
-  &quot;lastFilter&quot;: {
-    &quot;state&quot;: &quot;OPEN&quot;,
-    &quot;assignee&quot;: &quot;saahilpal&quot;
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "saahilpal"
   }
-}</component>
-  <component name="GithubPullRequestsUISettings">{
-  &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/jeswinthayil/Lostandfound.git&quot;,
-    &quot;accountId&quot;: &quot;ef242156-9a88-443e-aad3-8790479dbb71&quot;
+}]]></component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/jeswinthayil/Lostandfound.git",
+    "accountId": "7d4709ed-5a73-4fd2-b785-3ac9223fd5f1"
   }
-}</component>
-  <component name="ProblemsViewState">
-    <option name="selectedTabId" value="CurrentFile" />
-  </component>
-  <component name="ProjectColorInfo">{
-  &quot;associatedIndex&quot;: 5
-}</component>
-  <component name="ProjectId" id="2zaP2pkPgs29pGIR06LyFQCYGMO" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+}]]></component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "customColor": "",
+  "associatedIndex": 0
+}]]></component>
+  <component name="ProjectId" id="2zfQpGalI8uoL1d5NDkCDyQa1nu" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
-    &quot;Application.Main.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;Application.Main.executor&quot;: &quot;Debug&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/Jeswin/IdeaProjects/Lostandfound&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;
   }
 }</component>
-  <component name="RunManager">
-    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="lostandfound.config.Main" />
-      <module name="Lostandfound" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="lostandfound.config.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <recent_temporary>
-      <list>
-        <item itemvalue="Application.Main" />
-      </list>
-    </recent_temporary>
-  </component>
-  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="a413556e-e083-4003-8d69-aeaa5a9581fa" name="Changes" comment="" />
-      <created>1751966008389</created>
+      <changelist id="338ec3af-c662-40c1-91f1-eda3c9302397" name="Changes" comment="" />
+      <created>1752119224758</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1751966008389</updated>
+      <updated>1752119224758</updated>
     </task>
-    <task id="LOCAL-00001" summary="created item object">
+    <task id="LOCAL-00001" summary="added my profile api">
       <option name="closed" value="true" />
-      <created>1751969360196</created>
+      <created>1752120685079</created>
       <option name="number" value="00001" />
       <option name="presentableId" value="LOCAL-00001" />
       <option name="project" value="LOCAL" />
-      <updated>1751969360196</updated>
+      <updated>1752120685079</updated>
     </task>
-    <task id="LOCAL-00002" summary="created item object">
-      <option name="closed" value="true" />
-      <created>1751969420660</created>
-      <option name="number" value="00002" />
-      <option name="presentableId" value="LOCAL-00002" />
-      <option name="project" value="LOCAL" />
-      <updated>1751969420660</updated>
-    </task>
-    <task id="LOCAL-00003" summary="added method for markClaimed">
-      <option name="closed" value="true" />
-      <created>1751970556535</created>
-      <option name="number" value="00003" />
-      <option name="presentableId" value="LOCAL-00003" />
-      <option name="project" value="LOCAL" />
-      <updated>1751970556535</updated>
-    </task>
-    <task id="LOCAL-00004" summary="created user object">
-      <option name="closed" value="true" />
-      <created>1751971628618</created>
-      <option name="number" value="00004" />
-      <option name="presentableId" value="LOCAL-00004" />
-      <option name="project" value="LOCAL" />
-      <updated>1751971628618</updated>
-    </task>
-    <task id="LOCAL-00005" summary="typo fixed">
-      <option name="closed" value="true" />
-      <created>1752033063746</created>
-      <option name="number" value="00005" />
-      <option name="presentableId" value="LOCAL-00005" />
-      <option name="project" value="LOCAL" />
-      <updated>1752033063746</updated>
-    </task>
-    <task id="LOCAL-00006" summary="changed the expiration time">
-      <option name="closed" value="true" />
-      <created>1752033083517</created>
-      <option name="number" value="00006" />
-      <option name="presentableId" value="LOCAL-00006" />
-      <option name="project" value="LOCAL" />
-      <updated>1752033083517</updated>
-    </task>
-    <task id="LOCAL-00007" summary="commit">
-      <option name="closed" value="true" />
-      <created>1752033092474</created>
-      <option name="number" value="00007" />
-      <option name="presentableId" value="LOCAL-00007" />
-      <option name="project" value="LOCAL" />
-      <updated>1752033092474</updated>
-    </task>
-    <task id="LOCAL-00008" summary="added forget password feature">
-      <option name="closed" value="true" />
-      <created>1752036225264</created>
-      <option name="number" value="00008" />
-      <option name="presentableId" value="LOCAL-00008" />
-      <option name="project" value="LOCAL" />
-      <updated>1752036225264</updated>
-    </task>
-    <task id="LOCAL-00009" summary="commit">
-      <option name="closed" value="true" />
-      <created>1752036251863</created>
-      <option name="number" value="00009" />
-      <option name="presentableId" value="LOCAL-00009" />
-      <option name="project" value="LOCAL" />
-      <updated>1752036251863</updated>
-    </task>
-    <task id="LOCAL-00010" summary="added admin condition">
-      <option name="closed" value="true" />
-      <created>1752036294782</created>
-      <option name="number" value="00010" />
-      <option name="presentableId" value="LOCAL-00010" />
-      <option name="project" value="LOCAL" />
-      <updated>1752036294782</updated>
-    </task>
-    <task id="LOCAL-00011" summary="commit">
-      <option name="closed" value="true" />
-      <created>1752036303754</created>
-      <option name="number" value="00011" />
-      <option name="presentableId" value="LOCAL-00011" />
-      <option name="project" value="LOCAL" />
-      <updated>1752036303754</updated>
-    </task>
-    <task id="LOCAL-00012" summary="commit">
-      <option name="closed" value="true" />
-      <created>1752037084110</created>
-      <option name="number" value="00012" />
-      <option name="presentableId" value="LOCAL-00012" />
-      <option name="project" value="LOCAL" />
-      <updated>1752037084110</updated>
-    </task>
-    <task id="LOCAL-00013" summary="forgot password handler">
-      <option name="closed" value="true" />
-      <created>1752037114038</created>
-      <option name="number" value="00013" />
-      <option name="presentableId" value="LOCAL-00013" />
-      <option name="project" value="LOCAL" />
-      <updated>1752037114038</updated>
-    </task>
-    <task id="LOCAL-00014" summary="commit">
-      <option name="closed" value="true" />
-      <created>1752037122206</created>
-      <option name="number" value="00014" />
-      <option name="presentableId" value="LOCAL-00014" />
-      <option name="project" value="LOCAL" />
-      <updated>1752037122206</updated>
-    </task>
-    <task id="LOCAL-00015" summary="commit">
-      <option name="closed" value="true" />
-      <created>1752038823524</created>
-      <option name="number" value="00015" />
-      <option name="presentableId" value="LOCAL-00015" />
-      <option name="project" value="LOCAL" />
-      <updated>1752038823524</updated>
-    </task>
-    <option name="localTasksCounter" value="16" />
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="created item object" />
-    <MESSAGE value="added method for markClaimed" />
-    <MESSAGE value="created user object" />
-    <MESSAGE value="typo fixed" />
-    <MESSAGE value="changed the expiration time" />
-    <MESSAGE value="added forget password feature" />
-    <MESSAGE value="added admin condition" />
-    <MESSAGE value="forgot password handler" />
-    <MESSAGE value="commit" />
-    <option name="LAST_COMMIT_MESSAGE" value="commit" />
+    <MESSAGE value="added my profile api" />
+    <option name="LAST_COMMIT_MESSAGE" value="added my profile api" />
   </component>
 </project>
