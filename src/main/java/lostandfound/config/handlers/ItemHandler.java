@@ -37,52 +37,58 @@ public class ItemHandler {
 
     private void handlePostItem(RoutingContext ctx) {
         Set<FileUpload> uploads = new HashSet<>(ctx.fileUploads());
+        JsonObject body = ctx.body().asJsonObject();
+        String userEmail = ctx.data().get("userEmail").toString();
 
+        // ✅ Validate required fields
+        String name = body.getString("name");
+        String description = body.getString("description");
+        String category = body.getString("category");
+        String type = body.getString("type"); // Must be "lost" or "found"
 
-        if (uploads.isEmpty()) {
-            ctx.response().setStatusCode(400).end("Image file required");
+        if (name == null || name.trim().isEmpty() ||
+                description == null || description.trim().isEmpty() ||
+                category == null || category.trim().isEmpty() ||
+                type == null || (!type.equals("lost") && !type.equals("found"))) {
+            ctx.response().setStatusCode(400).end("Name, description, category, and valid type (lost or found) are required");
             return;
         }
 
-        FileUpload upload = uploads.iterator().next();
-        String uploadedPath = upload.uploadedFileName();
-        String extension = upload.fileName().substring(upload.fileName().lastIndexOf('.'));
-        String newFileName = UUID.randomUUID() + extension;
-        String targetPath = "uploads/" + newFileName;
+        // If image is provided, save it
+        if (!uploads.isEmpty()) {
+            FileUpload upload = uploads.iterator().next();
+            String uploadedPath = upload.uploadedFileName();
+            String extension = upload.fileName().substring(upload.fileName().lastIndexOf('.'));
+            String newFileName = UUID.randomUUID() + extension;
+            String targetPath = "uploads/" + newFileName;
 
-        FileSystem fs = vertx.fileSystem();
-        fs.move(uploadedPath, targetPath, moveRes -> {
-            if (moveRes.succeeded()) {
-                JsonObject body = ctx.body().asJsonObject();
-                String userEmail = ctx.data().get("userEmail").toString();
-                String imageUrl = "/uploads/" + newFileName;
-
-                // ✅ Validate required fields
-                String name = body.getString("name");
-                String description = body.getString("description");
-                String category = body.getString("category");
-
-                if (name == null || name.trim().isEmpty() ||
-                        description == null || description.trim().isEmpty() ||
-                        category == null || category.trim().isEmpty()) {
-                    ctx.response().setStatusCode(400).end("Name, description, and category are required");
-                    return;
+            FileSystem fs = vertx.fileSystem();
+            fs.move(uploadedPath, targetPath, moveRes -> {
+                if (moveRes.succeeded()) {
+                    String imageUrl = "/uploads/" + newFileName;
+                    JsonObject itemDoc = Item.toMongoDoc(body, userEmail, imageUrl);
+                    saveItemToMongo(ctx, itemDoc);
+                } else {
+                    ctx.response().setStatusCode(500).end("Image upload failed");
                 }
+            });
+        } else {
+            // No image uploaded
+            JsonObject itemDoc = Item.toMongoDoc(body, userEmail, null); // or "" if your schema prefers empty string
+            saveItemToMongo(ctx, itemDoc);
+        }
+    }
 
-                JsonObject itemDoc = Item.toMongoDoc(body, userEmail, imageUrl);
-
-                mongoClient.insert("items", itemDoc, insertRes -> {
-                    if (insertRes.succeeded()) {
-                        ctx.response().setStatusCode(201).end("Item posted successfully");
-                    } else {
-                        ctx.response().setStatusCode(500).end("Error saving item");
-                    }
-                });
+    private void saveItemToMongo(RoutingContext ctx, JsonObject itemDoc) {
+        mongoClient.insert("items", itemDoc, insertRes -> {
+            if (insertRes.succeeded()) {
+                ctx.response().setStatusCode(201).end("Item posted successfully");
             } else {
-                ctx.response().setStatusCode(500).end("Image upload failed");
+                ctx.response().setStatusCode(500).end("Error saving item");
             }
         });
     }
+
 
     private void handleGetItems(RoutingContext ctx) {
         JsonObject query = new JsonObject();
