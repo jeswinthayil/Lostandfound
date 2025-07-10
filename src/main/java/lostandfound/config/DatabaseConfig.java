@@ -10,7 +10,7 @@ public class DatabaseConfig {
     public static MongoClient getMongoClient(Vertx vertx) {
         if (mongoClient == null) {
             JsonObject config = new JsonObject()
-                    .put("connection_string", "mongodb://localhost:27017")
+                    .put("connection_string", "mongodb+srv://findlykjc:YalNOtlOqxAunibU@lostfoundcluster.s0h4m3u.mongodb.net/lostandfound?retryWrites=true&w=majority&appName=LostFoundCluster")
                     .put("db_name", "lostandfound");
             mongoClient = MongoClient.createShared(vertx, config);
         }
