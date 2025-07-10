@@ -35,6 +35,8 @@ public class AuthHandler {
                 .handler(this::handleLogout);
         router.get("/api/me").handler(this::handleGetMyProfile);
         router.patch("/api/me").handler(this::handleUpdateProfile);
+        router.post("/api/auth/reset-password").handler(this::handleResetPassword);
+
 
 
     }
@@ -189,6 +191,48 @@ public class AuthHandler {
             }
         });
     }
+    private void handleResetPassword(RoutingContext ctx) {
+        JsonObject body = ctx.body().asJsonObject();
+        String token = body.getString("token");
+        String newPassword = body.getString("newPassword");
+
+        if (token == null || newPassword == null || newPassword.length() < 6) {
+            ctx.response().setStatusCode(400).end("Missing token or password too short");
+            return;
+        }
+
+        mongoClient.findOne("password_resets", new JsonObject().put("token", token), null, lookup -> {
+            if (lookup.failed() || lookup.result() == null) {
+                ctx.response().setStatusCode(400).end("Invalid or expired reset token");
+                return;
+            }
+
+            JsonObject tokenEntry = lookup.result();
+            long createdAt = tokenEntry.getLong("createdAt");
+            long now = System.currentTimeMillis();
+
+            if (now - createdAt > 10 * 60 * 1000) { // 10 minutes
+                ctx.response().setStatusCode(410).end("Reset token expired");
+                return;
+            }
+
+            String email = tokenEntry.getString("email");
+            String hashed = PasswordUtil.hashPassword(newPassword);
+
+            JsonObject update = new JsonObject().put("$set", new JsonObject().put("password", hashed));
+
+            mongoClient.updateCollection("users", new JsonObject().put("email", email), update, updateRes -> {
+                if (updateRes.succeeded()) {
+                    // Cleanup token
+                    mongoClient.removeDocument("password_resets", new JsonObject().put("token", token), cleanup -> {});
+                    ctx.response().end("Password reset successful");
+                } else {
+                    ctx.response().setStatusCode(500).end("Failed to update password");
+                }
+            });
+        });
+    }
+
 
 
     // Email verification
