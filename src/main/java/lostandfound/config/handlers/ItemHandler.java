@@ -31,6 +31,8 @@ public class ItemHandler {
         router.get("/api/items/:id").handler(this::handleGetItemById);
         router.patch("/api/items/:id/claim").handler(AuthMiddleware.requireAuth()).handler(this::handleMarkClaimed);
         router.post("/api/items/:id/contact").handler(AuthMiddleware.requireAuth()).handler(this::handleContactPoster);
+        router.get("/api/search").handler(this::handleGlobalSearch);
+
     }
 
     private void handlePostItem(RoutingContext ctx) {
@@ -178,4 +180,30 @@ public class ItemHandler {
             }
         });
     }
+
+    private void handleGlobalSearch(RoutingContext ctx) {
+        String keyword = ctx.queryParam("q").isEmpty() ? "" : ctx.queryParam("q").get(0);
+
+        if (keyword.isEmpty()) {
+            ctx.response().setStatusCode(400).end("Missing search keyword");
+            return;
+        }
+
+        JsonObject query = new JsonObject().put("$or", new JsonArray()
+                .add(new JsonObject().put("title", new JsonObject().put("$regex", keyword).put("$options", "i")))
+                .add(new JsonObject().put("description", new JsonObject().put("$regex", keyword).put("$options", "i")))
+                .add(new JsonObject().put("category", new JsonObject().put("$regex", keyword).put("$options", "i")))
+        );
+
+        mongoClient.find("items", query, res -> {
+            if (res.succeeded()) {
+                ctx.response()
+                        .putHeader("Content-Type", "application/json")
+                        .end(new JsonArray(res.result()).encode());
+            } else {
+                ctx.response().setStatusCode(500).end("Search failed");
+            }
+        });
+    }
+
 }
