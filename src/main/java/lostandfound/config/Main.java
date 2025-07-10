@@ -11,10 +11,8 @@ import io.vertx.ext.web.handler.BodyHandler;
 import io.vertx.ext.web.handler.CorsHandler;
 import io.vertx.ext.web.handler.StaticHandler;
 import lostandfound.config.utils.RedisUtil;
-
-import io.vertx.redis.client.Redis;
 import io.vertx.redis.client.RedisAPI;
-import io.vertx.redis.client.RedisOptions;
+
 
 import java.util.HashSet;
 import java.util.Set;
