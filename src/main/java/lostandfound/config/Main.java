@@ -1,5 +1,7 @@
 package lostandfound.config;
 
+import io.github.cdimascio.dotenv.Dotenv;
+import io.vertx.core.json.JsonObject;
 import lostandfound.config.handlers.AdminHandler;
 import lostandfound.config.handlers.AuthHandler;
 import lostandfound.config.handlers.ItemHandler;
@@ -10,6 +12,7 @@ import io.vertx.ext.web.Router;
 import io.vertx.ext.web.handler.BodyHandler;
 import io.vertx.ext.web.handler.CorsHandler;
 import io.vertx.ext.web.handler.StaticHandler;
+import lostandfound.config.utils.PasswordUtil;
 import lostandfound.config.utils.RedisUtil;
 import io.vertx.redis.client.RedisAPI;
 
@@ -18,17 +21,52 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class Main extends AbstractVerticle {
-
+    private static final Dotenv dotenv = Dotenv.load();
     public static void main(String[] args) {
         Vertx vertx = Vertx.vertx();
         vertx.deployVerticle(new Main());
     }
+    private void insertAdminIfNotExists(MongoClient mongoClient) {
+        String adminEmail = dotenv.get("ADMIN_EMAIL");
+        String adminPassword = dotenv.get("ADMIN_PASSWORD");
+
+        if (adminEmail == null || adminPassword == null) {
+            System.err.println(" ADMIN_EMAIL or ADMIN_PASSWORD not set in .env");
+            return;
+        }
+
+        mongoClient.findOne("users", new JsonObject().put("email", adminEmail), null, res -> {
+            if (res.succeeded() && res.result() == null) {
+                String hashedPassword = PasswordUtil.hashPassword(adminPassword);
+                JsonObject adminUser = new JsonObject()
+                        .put("name", "Admin")
+                        .put("email", adminEmail)
+                        .put("password", hashedPassword)
+                        .put("role", "admin")
+                        .put("isVerified", true);
+
+                mongoClient.insert("users", adminUser, insert -> {
+                    if (insert.succeeded()) {
+                        System.out.println("Admin user inserted");
+                    } else {
+                        System.err.println("Failed to insert admin: " + insert.cause().getMessage());
+                    }
+                });
+            } else {
+                System.out.println("ℹ️ Admin already exists");
+            }
+        });
+
+    }
+
 
     @Override
     public void start() {
 
         MongoClient mongoClient = DatabaseConfig.getMongoClient(vertx);
         Router router = Router.router(vertx);
+        insertAdminIfNotExists(mongoClient);
+
 
         // ✅ INIT REDIS
         RedisUtil.init(vertx);
