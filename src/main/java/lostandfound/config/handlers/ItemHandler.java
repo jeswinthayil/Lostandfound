@@ -106,6 +106,21 @@ public class ItemHandler {
         if (title != null) {
             query.put("title", new JsonObject().put("$regex", ".*" + title + ".*").put("$options", "i"));
         }
+        String sortBy = ctx.request().getParam("sortBy");
+
+        // Sorting logic
+        JsonObject sortObj = new JsonObject();
+        if (sortBy != null) {
+            switch (sortBy) {
+                case "date":
+                    sortObj.put("createdAt", -1); // newest first
+                    break;
+                case "type":
+                    sortObj.put("type", 1); // "found" before "lost"
+                    break;
+            }
+        }
+        options.setSort(sortObj);
 
         mongoClient.find("items", query, res -> {
             if (res.succeeded()) {
