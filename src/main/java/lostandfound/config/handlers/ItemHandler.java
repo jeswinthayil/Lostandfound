@@ -160,6 +160,12 @@ public class ItemHandler {
         mongoClient.findOne("items", query, null, res -> {
             if (res.succeeded() && res.result() != null) {
                 JsonObject item = res.result();
+                JsonArray claimedRequests = item.getJsonArray("claimedRequests", new JsonArray());
+                if (!claimedRequests.contains(userEmail)) {
+                    ctx.response().setStatusCode(400).end("You must first contact the poster before claiming.");
+                    return;
+                }
+
 
                 if (!item.getString("postedBy").equals(userEmail)) {
                     ctx.response().setStatusCode(403).end("Only poster can mark as claimed");
@@ -212,6 +218,17 @@ public class ItemHandler {
                 String itemTitle = item.getString("title");
 
                 MailUtil.sendContactMessage( posterEmail, senderEmail, itemTitle, message);
+                // Track that this user has contacted for claim eligibility
+                JsonObject update = new JsonObject().put("$addToSet",
+                        new JsonObject().put("claimedRequests", senderEmail));
+
+                mongoClient.updateCollection("items", query, update, updateRes -> {
+                    if (updateRes.failed()) {
+                        System.err.println("Failed to record contact attempt: " + updateRes.cause());
+                    }
+                });
+
+
 
                 ctx.response().end("Message sent to item poster");
             } else {
