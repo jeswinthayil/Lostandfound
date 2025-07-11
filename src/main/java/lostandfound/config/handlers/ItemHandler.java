@@ -39,8 +39,6 @@ public class ItemHandler {
         Set<FileUpload> uploads = new HashSet<>(ctx.fileUploads());
         JsonObject body = ctx.body().asJsonObject();
         String userEmail = ctx.data().get("userEmail").toString();
-
-        // ✅ Validate required fields
         String name = body.getString("name");
         String description = body.getString("description");
         String category = body.getString("category");
