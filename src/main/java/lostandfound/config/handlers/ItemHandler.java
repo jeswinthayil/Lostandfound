@@ -118,6 +118,9 @@ public class ItemHandler {
                 case "type":
                     sortObj.put("type", 1); // "found" before "lost"
                     break;
+                case "category":
+                    sortObj.put("category", 1); // sort alphabetically by category
+                    break;
             }
         }
         options.setSort(sortObj);
