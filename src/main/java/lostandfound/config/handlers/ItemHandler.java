@@ -12,6 +12,7 @@ import io.vertx.ext.web.RoutingContext;
 import lostandfound.config.middleware.AuthMiddleware;
 import lostandfound.config.models.Item;
 import lostandfound.config.utils.MailUtil;
+import lostandfound.config.utils.RedisUtil;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -33,6 +34,10 @@ public class ItemHandler {
         router.patch("/api/items/:id/claim").handler(AuthMiddleware.requireAuth()).handler(this::handleMarkClaimed);
         router.post("/api/items/:id/contact").handler(AuthMiddleware.requireAuth()).handler(this::handleContactPoster);
         router.get("/api/search").handler(this::handleGlobalSearch);
+        router.get("/api/items/mine")
+                .handler(AuthMiddleware.requireAuth(RedisUtil.getRedis()))
+                .handler(this::handleGetMyItems);
+
 
     }
 
@@ -242,5 +247,26 @@ public class ItemHandler {
             }
         });
     }
+    private void handleGetMyItems(RoutingContext ctx) {
+        String email = ctx.get("userEmail");
+
+        if (email == null) {
+            ctx.response().setStatusCode(401).end("Unauthorized");
+            return;
+        }
+
+        JsonObject query = new JsonObject().put("postedBy", email);
+
+        mongoClient.find("items", query, res -> {
+            if (res.succeeded()) {
+                ctx.response()
+                        .putHeader("Content-Type", "application/json")
+                        .end(res.result().toString());
+            } else {
+                ctx.response().setStatusCode(500).end("Failed to fetch items");
+            }
+        });
+    }
+
 
 }
