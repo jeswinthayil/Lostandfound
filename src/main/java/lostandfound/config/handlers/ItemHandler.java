@@ -34,27 +34,24 @@ public class ItemHandler {
         router.patch("/api/items/:id/claim").handler(AuthMiddleware.requireAuth()).handler(this::handleMarkClaimed);
         router.post("/api/items/:id/contact").handler(AuthMiddleware.requireAuth()).handler(this::handleContactPoster);
         router.get("/api/search").handler(this::handleGlobalSearch);
-        router.get("/api/items/mine")
-                .handler(AuthMiddleware.requireAuth(RedisUtil.getRedis()))
-                .handler(this::handleGetMyItems);
-
-
+        router.get("/api/items/mine").handler(AuthMiddleware.requireAuth(RedisUtil.getRedis())).handler(this::handleGetMyItems);
+        router.delete("/api/items/:id").handler(AuthMiddleware.requireAuth(RedisUtil.getRedis())).handler(this::handleDeleteMyItem);
     }
 
     private void handlePostItem(RoutingContext ctx) {
         Set<FileUpload> uploads = new HashSet<>(ctx.fileUploads());
         JsonObject body = ctx.body().asJsonObject();
         String userEmail = ctx.data().get("userEmail").toString();
-        String name = body.getString("name");
+        String title = body.getString("title");
         String description = body.getString("description");
         String category = body.getString("category");
-        String type = body.getString("type"); // Must be "lost" or "found"
+        String status = body.getString("status"); // Must be "lost" or "found"
 
-        if (name == null || name.trim().isEmpty() ||
+        if (title == null || title.trim().isEmpty() ||
                 description == null || description.trim().isEmpty() ||
                 category == null || category.trim().isEmpty() ||
-                type == null || (!type.equals("lost") && !type.equals("found"))) {
-            ctx.response().setStatusCode(400).end("Name, description, category, and valid type (lost or found) are required");
+                status == null || (!status.equals("lost") && !status.equals("found"))) {
+            ctx.response().setStatusCode(400).end("Title, description, category, and valid status (lost or found) are required");
             return;
         }
 
@@ -120,8 +117,8 @@ public class ItemHandler {
                 case "date":
                     sortObj.put("createdAt", -1); // newest first
                     break;
-                case "type":
-                    sortObj.put("type", 1); // "found" before "lost"
+                case "status":
+                    sortObj.put("status", 1); // "found" before "lost"
                     break;
                 case "category":
                     sortObj.put("category", 1); // sort alphabetically by category
@@ -267,6 +264,34 @@ public class ItemHandler {
             }
         });
     }
+    private void handleDeleteMyItem(RoutingContext ctx) {
+        String id = ctx.pathParam("id");
+        String userEmail = ctx.get("userEmail");
+
+        if (id == null || userEmail == null) {
+            ctx.response().setStatusCode(400).end("Missing ID or not authenticated");
+            return;
+        }
+
+        // Create query to find the user's own post by ID
+        JsonObject query = new JsonObject()
+                .put("_id", id)
+                .put("postedBy", userEmail);
+
+        mongoClient.findOneAndDelete("items", query, res -> {
+            if (res.succeeded()) {
+                if (res.result() != null) {
+                    ctx.response().setStatusCode(200).end("Item deleted successfully");
+                } else {
+                    ctx.response().setStatusCode(403).end("You can only delete your own items");
+                }
+            } else {
+                ctx.response().setStatusCode(500).end("Failed to delete item");
+            }
+        });
+    }
+
+
 
 
 }
