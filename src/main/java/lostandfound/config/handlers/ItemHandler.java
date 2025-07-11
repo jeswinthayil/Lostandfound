@@ -167,8 +167,8 @@ public class ItemHandler {
                 }
 
 
-                if (!item.getString("postedBy").equals(userEmail)) {
-                    ctx.response().setStatusCode(403).end("Only poster can mark as claimed");
+                if (item.getString("postedBy").equals(userEmail)) {
+                    ctx.response().setStatusCode(400).end("You cannot claim your own item");
                     return;
                 }
 
