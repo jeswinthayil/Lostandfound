@@ -1,6 +1,7 @@
 package lostandfound.config;
 
 import io.github.cdimascio.dotenv.Dotenv;
+import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import lostandfound.config.handlers.AdminHandler;
 import lostandfound.config.handlers.AuthHandler;
@@ -58,6 +59,44 @@ public class Main extends AbstractVerticle {
         });
 
     }
+    private void startItemCleanupTask(MongoClient mongoClient) {
+        long intervalMillis = 24 * 60 * 60 * 1000; // 1 day
+
+        vertx.setPeriodic(intervalMillis, id -> {
+            long now = System.currentTimeMillis();
+
+            // Claimed: delete after 7 days
+            long claimedCutoff = now - (7L * 24 * 60 * 60 * 1000);
+            JsonObject claimedQuery = new JsonObject()
+                    .put("isClaimed", true)
+                    .put("claimedAt", new JsonObject().put("$lte", claimedCutoff));
+
+            mongoClient.removeDocuments("items", claimedQuery, res -> {
+                if (res.succeeded()) {
+                    System.out.println("🧹 Deleted claimed items older than 7 days");
+                } else {
+                    System.err.println("❌ Failed to delete old claimed items");
+                }
+            });
+
+            // Unclaimed: delete after 30 days
+            long unclaimedCutoff = now - (30L * 24 * 60 * 60 * 1000);
+            JsonObject unclaimedQuery = new JsonObject()
+                    .put("$or", new JsonArray()
+                            .add(new JsonObject().put("isClaimed", false))
+                            .add(new JsonObject().put("isClaimed", new JsonObject().put("$exists", false)))
+                    )
+                    .put("createdAt", new JsonObject().put("$lte", unclaimedCutoff));
+
+            mongoClient.removeDocuments("items", unclaimedQuery, res -> {
+                if (res.succeeded()) {
+                    System.out.println("🧹 Deleted unclaimed items older than 30 days");
+                } else {
+                    System.err.println("❌ Failed to delete old unclaimed items");
+                }
+            });
+        });
+    }
 
 
     @Override
@@ -66,6 +105,7 @@ public class Main extends AbstractVerticle {
         MongoClient mongoClient = DatabaseConfig.getMongoClient(vertx);
         Router router = Router.router(vertx);
         insertAdminIfNotExists(mongoClient);
+        startItemCleanupTask(mongoClient);
 
 
         // ✅ INIT REDIS
