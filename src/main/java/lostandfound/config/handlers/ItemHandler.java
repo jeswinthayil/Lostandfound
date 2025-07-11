@@ -4,6 +4,7 @@ import io.vertx.core.Vertx;
 import io.vertx.core.file.FileSystem;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
+import io.vertx.ext.mongo.FindOptions;
 import io.vertx.ext.mongo.MongoClient;
 import io.vertx.ext.web.FileUpload;
 import io.vertx.ext.web.Router;
@@ -92,12 +93,14 @@ public class ItemHandler {
 
     private void handleGetItems(RoutingContext ctx) {
         JsonObject query = new JsonObject();
+        FindOptions options = new FindOptions();
 
         String status = ctx.request().getParam("status");
         String categoryId = ctx.request().getParam("categoryId");
         String location = ctx.request().getParam("location");
         String title = ctx.request().getParam("title");
         String isClaimed = ctx.request().getParam("isClaimed");
+        String sortBy = ctx.request().getParam("sortBy");
 
         if (status != null) query.put("status", status);
         if (categoryId != null) query.put("categoryId", categoryId);
@@ -106,9 +109,8 @@ public class ItemHandler {
         if (title != null) {
             query.put("title", new JsonObject().put("$regex", ".*" + title + ".*").put("$options", "i"));
         }
-        String sortBy = ctx.request().getParam("sortBy");
 
-        // Sorting logic
+
         JsonObject sortObj = new JsonObject();
         if (sortBy != null) {
             switch (sortBy) {
@@ -125,7 +127,8 @@ public class ItemHandler {
         }
         options.setSort(sortObj);
 
-        mongoClient.find("items", query, res -> {
+        mongoClient.findWithOptions("items", query, options, res -> {
+
             if (res.succeeded()) {
                 ctx.response().putHeader("Content-Type", "application/json").end(new JsonArray(res.result()).encode());
             } else {
