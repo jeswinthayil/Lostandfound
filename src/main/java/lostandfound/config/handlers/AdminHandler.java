@@ -19,7 +19,10 @@ public class AdminHandler {
 
     public void setupRoutes(Router router) {
         router.get("/api/admin/items").handler(AuthMiddleware.requireAdmin()).handler(this::handleViewAllItems);
-        router.delete("/api/admin/items/:id").handler(AuthMiddleware.requireAdmin()).handler(this::handleDeleteItem);
+        router.delete("/api/admin/items/:id/inappropriate")
+                .handler(AuthMiddleware.requireAdmin())
+                .handler(this::handleDeleteItem);
+
         router.get("/api/admin/stats").handler(AuthMiddleware.requireAdmin()).handler(this::handleStats);
         // 🆕 Add routes for category management
         router.post("/api/admin/categories").handler(AuthMiddleware.requireAdmin()).handler(this::handleAddCategory);
