@@ -150,9 +150,9 @@ public class Main extends AbstractVerticle {
         // Start server
         vertx.createHttpServer()
                 .requestHandler(router)
-                .listen(8888, res -> {
+                .listen(8888,"0.0.0.0" ,res -> {
                     if (res.succeeded()) {
-                        System.out.println("Server is running at http://localhost:8888");
+                        System.out.println("Server is running ");
                     } else {
                         System.err.println("Server failed to start: " + res.cause());
                     }
