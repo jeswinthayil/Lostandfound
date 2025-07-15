@@ -1,22 +1,16 @@
 package lostandfound.config.handlers;
 
 import io.vertx.core.Vertx;
-import io.vertx.core.file.FileSystem;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.mongo.FindOptions;
 import io.vertx.ext.mongo.MongoClient;
-import io.vertx.ext.web.FileUpload;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.RoutingContext;
 import lostandfound.config.middleware.AuthMiddleware;
 import lostandfound.config.models.Item;
 import lostandfound.config.utils.MailUtil;
 import lostandfound.config.utils.RedisUtil;
-
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
 
 public class ItemHandler {
     private final MongoClient mongoClient;
@@ -39,13 +33,15 @@ public class ItemHandler {
     }
 
     private void handlePostItem(RoutingContext ctx) {
-        Set<FileUpload> uploads = new HashSet<>(ctx.fileUploads());
         JsonObject body = ctx.body().asJsonObject();
         String userEmail = ctx.data().get("userEmail").toString();
+
         String title = body.getString("title");
         String description = body.getString("description");
-        String category = body.getString("category");
-        String status = body.getString("status"); // Must be "lost" or "found"
+        String category = body.getString("categoryId"); // corrected field name
+        String status = body.getString("status");
+        String location= body.getString("location");
+        String photoData = body.getString("photoData"); // ✅ New field
 
         if (title == null || title.trim().isEmpty() ||
                 description == null || description.trim().isEmpty() ||
@@ -55,29 +51,13 @@ public class ItemHandler {
             return;
         }
 
-        // If image is provided, save it
-        if (!uploads.isEmpty()) {
-            FileUpload upload = uploads.iterator().next();
-            String uploadedPath = upload.uploadedFileName();
-            String extension = upload.fileName().substring(upload.fileName().lastIndexOf('.'));
-            String newFileName = UUID.randomUUID() + extension;
-            String targetPath = "uploads/" + newFileName;
-
-            FileSystem fs = vertx.fileSystem();
-            fs.move(uploadedPath, targetPath, moveRes -> {
-                if (moveRes.succeeded()) {
-                    String imageUrl = "/uploads/" + newFileName;
-                    JsonObject itemDoc = Item.toMongoDoc(body, userEmail, imageUrl);
-                    saveItemToMongo(ctx, itemDoc);
-                } else {
-                    ctx.response().setStatusCode(500).end("Image upload failed");
-                }
-            });
-        } else {
-            // No image uploaded
-            JsonObject itemDoc = Item.toMongoDoc(body, userEmail, null); // or "" if your schema prefers empty string
-            saveItemToMongo(ctx, itemDoc);
+        JsonObject itemDoc = Item.toMongoDoc(body, userEmail);// photoUrl = null
+        if (photoData != null && !photoData.trim().isEmpty()) {
+            itemDoc.put("photoData", photoData); // ✅ Save base64 string in DB
         }
+
+        saveItemToMongo(ctx, itemDoc);
+
     }
 
     private void saveItemToMongo(RoutingContext ctx, JsonObject itemDoc) {
