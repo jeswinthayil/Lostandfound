@@ -16,6 +16,8 @@ import io.vertx.ext.web.handler.StaticHandler;
 import lostandfound.config.utils.PasswordUtil;
 import lostandfound.config.utils.RedisUtil;
 import io.vertx.redis.client.RedisAPI;
+import io.vertx.core.http.HttpMethod; // ⬅️ Make sure this is imported
+
 
 
 import java.util.HashSet;
@@ -125,7 +127,8 @@ public class Main extends AbstractVerticle {
         CorsHandler corsHandler = CorsHandler.create()
                 .addOrigin("*")  // Allow all origins
                 .allowedHeaders(allowedHeaders)
-                .allowCredentials(true);  // Optional: only if you want to allow cookies/auth headers
+                .allowCredentials(true)// Optional: only if you want to allow cookies/auth headers
+         .allowedMethod(HttpMethod.PATCH);
 
         router.route().handler(corsHandler);
 
