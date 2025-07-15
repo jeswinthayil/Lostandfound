@@ -48,7 +48,7 @@ public class AdminHandler {
 
     private void handleDeleteItem(RoutingContext ctx) {
         String itemId = ctx.pathParam("id");
-        JsonObject query = new JsonObject().put("_id", new JsonObject().put("$oid", itemId));
+        JsonObject query = new JsonObject().put("_id", itemId);
 
         mongoClient.removeDocument("items", query, res -> {
             if (res.succeeded()) {
