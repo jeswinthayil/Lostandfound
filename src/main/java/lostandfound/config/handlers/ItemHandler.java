@@ -22,13 +22,14 @@ public class ItemHandler {
     }
 
     public void setupRoutes(Router router) {
+        router.get("/api/items/mine").handler(AuthMiddleware.requireAuth()).handler(this::handleGetMyItems);
         router.post("/api/items").handler(AuthMiddleware.requireAuth()).handler(this::handlePostItem);
         router.get("/api/items").handler(this::handleGetItems);
         router.get("/api/items/:id").handler(this::handleGetItemById);
         router.patch("/api/items/:id/claim").handler(AuthMiddleware.requireAuth()).handler(this::handleMarkClaimed);
         router.post("/api/items/:id/contact").handler(AuthMiddleware.requireAuth()).handler(this::handleContactPoster);
         router.get("/api/search").handler(this::handleGlobalSearch);
-        router.get("/api/items/mine").handler(AuthMiddleware.requireAuth(RedisUtil.getRedis())).handler(this::handleGetMyItems);
+
         router.delete("/api/items/:id").handler(AuthMiddleware.requireAuth(RedisUtil.getRedis())).handler(this::handleDeleteMyItem);
     }
 

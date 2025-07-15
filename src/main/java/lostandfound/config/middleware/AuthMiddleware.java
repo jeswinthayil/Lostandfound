@@ -27,7 +27,7 @@ public class AuthMiddleware {
         String email = JwtUtil.getEmailFromToken(token);
         String role = JwtUtil.getRoleFromToken(token);
 
-        ctx.put("email", email);
+        ctx.put("userEmail", email);  // ✅ Fix here
         ctx.put("role", role);
 
         ctx.next(); // Pass to next handler
