@@ -121,8 +121,7 @@ public class ItemHandler {
     private void handleGetItemById(RoutingContext ctx) {
         String itemId = ctx.pathParam("id");
 
-        JsonObject query = new JsonObject().put("_id", new JsonObject().put("$oid", itemId));
-
+        JsonObject query = new JsonObject().put("_id", itemId);
         mongoClient.findOne("items", query, null, res -> {
             if (res.succeeded() && res.result() != null) {
                 ctx.response().putHeader("Content-Type", "application/json").end(res.result().encode());
@@ -136,7 +135,7 @@ public class ItemHandler {
         String itemId = ctx.pathParam("id");
         String userEmail = ctx.data().get("userEmail").toString();
 
-        JsonObject query = new JsonObject().put("_id", new JsonObject().put("$oid", itemId));
+        JsonObject query = new JsonObject().put("_id", itemId);
 
         mongoClient.findOne("items", query, null, res -> {
             if (res.succeeded() && res.result() != null) {
@@ -184,7 +183,7 @@ public class ItemHandler {
             return;
         }
 
-        JsonObject query = new JsonObject().put("_id", new JsonObject().put("$oid", itemId));
+        JsonObject query = new JsonObject().put("_id", itemId);
 
         mongoClient.findOne("items", query, null, res -> {
             if (res.succeeded() && res.result() != null) {
