@@ -39,7 +39,7 @@ public class ItemHandler {
 
         String title = body.getString("title");
         String description = body.getString("description");
-        String category = body.getString("categoryId"); // corrected field name
+        String category = body.getString("categoryId    "); // corrected field name
         String status = body.getString("status");
         String location= body.getString("location");
         String photoData = body.getString("photoData"); // ✅ New field
@@ -210,7 +210,10 @@ public class ItemHandler {
 
 
 
-                ctx.response().end("Message sent to item poster");
+                ctx.response()
+                        .putHeader("Content-Type", "application/json")
+                        .end(new JsonObject().put("message", "Message sent to item poster").encode());
+
             } else {
                 ctx.response().setStatusCode(404).end("Item not found");
             }
